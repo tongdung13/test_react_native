@@ -11,27 +11,27 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {user_login} from './user_api';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const onSubmit = (email, password) => {
-    axios
-      .post('http://103.226.249.210:3022/api/login', {
-        email,
-        password,
-      })
+  const onSubmit = () => {
+    user_login({
+      email,
+      password,
+    })
       .then(response => {
         if (response.data.code == 200) {
-          navigation.navigate('Blog');
           AsyncStorage.setItem('AccessToken', response.data.data.token);
+          navigation.replace('Blog');
         } else {
           alert(response.data.message);
         }
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch(error => {
+        console.error(error);
       });
   };
 
@@ -53,9 +53,7 @@ const Login = ({navigation}) => {
         secureTextEntry={true}
         textContentType="password"
       />
-      <TouchableOpacity
-        onPress={() => onSubmit(email, password)}
-        style={styles.button}>
+      <TouchableOpacity onPress={() => onSubmit()} style={styles.button}>
         <Text style={styles.submit}>Login</Text>
       </TouchableOpacity>
     </View>

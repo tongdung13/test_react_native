@@ -1,6 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import React, {useState} from 'react';
+import React from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -8,31 +6,19 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {DataTable} from 'react-native-paper';
+import {blog_api} from './blog_api';
 
 const Blog = ({navigation}) => {
-  const [token, setToken] = useState('');
-  const [blogs, setBlogs] = useState([]);
-  AsyncStorage.getItem('AccessToken').then(value => {
-    setToken(value);
-  });
-
-  const headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
-    // cu phap co dau cach dang sau Bearer
-    Authorization: 'Bearer ' + token,
-  };
-
-  
-  axios
-    .get('http://103.226.249.210:3022/api/blogs', {headers})
+  blog_api()
     .then(response => {
-      setBlogs(response.data.data);
+      this.blogs = response.data.data;
+      // console.log(blogs);
     })
-    .catch(function (error) {
-      alert(error);
+    .catch(error => {
+      console.error(error);
     });
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Blog Screen</Text>
@@ -41,15 +27,36 @@ const Blog = ({navigation}) => {
         style={styles.button}>
         <Text style={styles.submit}>Quay lai</Text>
       </TouchableOpacity>
-      <ScrollView>
-        {blogs.map((blog, index) => {
+      {/* <View style={styles.blog}> */}
+      <DataTable style={styles.table}>
+        <DataTable.Header style={styles.headers}>
+          <DataTable.Title>
+            <Text style={styles.title}>Title</Text>
+          </DataTable.Title>
+          <DataTable.Title>
+            <Text style={styles.title}>Content</Text>
+          </DataTable.Title>
+          <DataTable.Title>
+            <Text style={styles.title}>Image</Text>{' '}
+          </DataTable.Title>
+        </DataTable.Header>
+        {this.blogs.map(blog => {
           return (
-            <View style={styles.blog}>
-              <Text key={index + 1}>{blog.title}</Text>
-            </View>
+            <DataTable.Row style={styles.row}>
+              <DataTable.Cell>
+                <Text style={styles.data}>{blog.title}</Text>
+              </DataTable.Cell>
+              <DataTable.Cell>
+                <Text style={styles.data}>{blog.content}</Text>
+              </DataTable.Cell>
+              <DataTable.Cell>
+                <Text style={styles.data}>{blog.image}</Text>
+              </DataTable.Cell>
+            </DataTable.Row>
           );
         })}
-      </ScrollView>
+      </DataTable>
+      {/* </View> */}
     </View>
   );
 };
@@ -58,7 +65,6 @@ styles = StyleSheet.create({
   container: {
     flex: 1,
     textAlign: 'center',
-    justifyContent: 'center',
     alignItems: 'center',
   },
   header: {
@@ -66,10 +72,24 @@ styles = StyleSheet.create({
     color: 'red',
   },
   blog: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
+    width: 350,
+  },
+  table: {
+    padding: 15,
+  },
+  headers: {
+    backgroundColor: '#6699FF',
+  },
+  title: {
+    fontSize: 18,
+    color: 'red',
+  },
+  row: {
+    borderWidth: 1,
+  },
+  data: {
+    fontSize: 16,
+    color: '#99CC33',
   },
 });
 
