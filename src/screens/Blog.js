@@ -1,6 +1,5 @@
-
-import { S3Image } from 'aws-amplify-react-native';
-import React from 'react';
+import {S3Image} from 'aws-amplify-react-native';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   ScrollView,
@@ -13,19 +12,23 @@ import {DataTable} from 'react-native-paper';
 import {blog_api} from './blog_api';
 
 const Blog = ({navigation}) => {
-  blog_api()
-    .then(response => {
-      this.blogs = response.data.data;
-      // console.log(blogs);
-    })
-    .catch(error => {
-      console.error(error);
-    });
-    // if (Array.isArray(this.blogs)) {
-    //   console.log('------ true -----');
-    // } else {
-    //   console.log('------ false -----');
-    // }
+  const [blogs, setBlogs] = useState([]);
+
+  useEffect(() => {
+    blog_api()
+      .then(response => {
+        if (response.data.code == 200) {
+          const data = response.data.data;
+          setBlogs(data);
+        } else {
+          alert(response.data.message);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Blog Screen</Text>
@@ -46,23 +49,22 @@ const Blog = ({navigation}) => {
             <Text style={styles.title}>Image</Text>{' '}
           </DataTable.Title>
         </DataTable.Header>
-        {Array.isArray(this.blogs) && this.blogs.map((data, index) => {
-          return (
-            <DataTable.Row style={styles.row} key={index}>
-              <DataTable.Cell>
-                <Text style={styles.data}>
-                  {data.title}
-                </Text>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <Text style={styles.data}>{data.content}</Text>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <Image source={{uri: data.image}} style={styles.image} />
-              </DataTable.Cell>
-            </DataTable.Row>
-          );
-        })}
+        {Array.isArray(blogs) &&
+          blogs.map((data, index) => {
+            return (
+              <DataTable.Row style={styles.row} key={index}>
+                <DataTable.Cell>
+                  <Text style={styles.data}>{data.title}</Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <Text style={styles.data}>{data.content}</Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <Image source={{uri: data.image}} style={styles.image} />
+                </DataTable.Cell>
+              </DataTable.Row>
+            );
+          })}
       </DataTable>
     </View>
   );
@@ -99,7 +101,8 @@ styles = StyleSheet.create({
     color: '#99CC33',
   },
   image: {
-    width: 10,
+    width: 50,
+    height: 40,
   },
 });
 

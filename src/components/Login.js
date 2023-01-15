@@ -26,6 +26,7 @@ const Login = ({navigation}) => {
         if (response.data.code == 200) {
           AsyncStorage.setItem('AccessToken', response.data.data.token);
           navigation.navigate('Blog');
+          alert('Đăng nhập thành công');
         } else {
           alert(response.data.message);
         }
