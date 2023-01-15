@@ -11,6 +11,8 @@ export const blog_api = async data => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
         Authorization: 'Bearer ' + dataToken,
       },
       data: data,

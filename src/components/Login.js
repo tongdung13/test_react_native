@@ -25,7 +25,7 @@ const Login = ({navigation}) => {
       .then(response => {
         if (response.data.code == 200) {
           AsyncStorage.setItem('AccessToken', response.data.data.token);
-          navigation.replace('Blog');
+          navigation.navigate('Blog');
         } else {
           alert(response.data.message);
         }

@@ -1,5 +1,8 @@
+
+import { S3Image } from 'aws-amplify-react-native';
 import React from 'react';
 import {
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,7 +21,11 @@ const Blog = ({navigation}) => {
     .catch(error => {
       console.error(error);
     });
-
+    // if (Array.isArray(this.blogs)) {
+    //   console.log('------ true -----');
+    // } else {
+    //   console.log('------ false -----');
+    // }
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Blog Screen</Text>
@@ -27,7 +34,6 @@ const Blog = ({navigation}) => {
         style={styles.button}>
         <Text style={styles.submit}>Quay lai</Text>
       </TouchableOpacity>
-      {/* <View style={styles.blog}> */}
       <DataTable style={styles.table}>
         <DataTable.Header style={styles.headers}>
           <DataTable.Title>
@@ -40,23 +46,24 @@ const Blog = ({navigation}) => {
             <Text style={styles.title}>Image</Text>{' '}
           </DataTable.Title>
         </DataTable.Header>
-        {this.blogs.map(blog => {
+        {Array.isArray(this.blogs) && this.blogs.map((data, index) => {
           return (
-            <DataTable.Row style={styles.row}>
+            <DataTable.Row style={styles.row} key={index}>
               <DataTable.Cell>
-                <Text style={styles.data}>{blog.title}</Text>
+                <Text style={styles.data}>
+                  {data.title}
+                </Text>
               </DataTable.Cell>
               <DataTable.Cell>
-                <Text style={styles.data}>{blog.content}</Text>
+                <Text style={styles.data}>{data.content}</Text>
               </DataTable.Cell>
               <DataTable.Cell>
-                <Text style={styles.data}>{blog.image}</Text>
+                <Image source={{uri: data.image}} style={styles.image} />
               </DataTable.Cell>
             </DataTable.Row>
           );
         })}
       </DataTable>
-      {/* </View> */}
     </View>
   );
 };
@@ -90,6 +97,9 @@ styles = StyleSheet.create({
   data: {
     fontSize: 16,
     color: '#99CC33',
+  },
+  image: {
+    width: 10,
   },
 });
 
