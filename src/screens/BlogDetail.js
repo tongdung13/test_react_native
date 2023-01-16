@@ -1,34 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import { blog_detail } from './blog_api';
+import {blog_detail} from './blog_api';
 
 export const BlogDetail = ({route, navigation}) => {
   const [blogs, setBlogs] = useState([]);
   useEffect(() => {
     const id = route.params;
     blog_detail(id)
-        .then(response => {
-            setBlogs(response.data.data);
-        }).catch(error => {
-            console.error(error);
-        })
+      .then(response => {
+        setBlogs(response.data.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }, []);
   return (
-    <View style={styles.header}>
-      <Text style={styles.title}>Blog Detail</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('Blog')}>
-        <Text style={styles.button}>Tro ve</Text>
-      </TouchableOpacity>
-    </View>,
-    <View>
+    (
+      <View style={styles.header}>
+        <Text style={styles.title}>Blog Detail</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Blog')}>
+          <Text style={styles.button}>Tro ve</Text>
+        </TouchableOpacity>
+      </View>
+    ),
+    (
+      <View>
         <Image style={styles.image} source={{uri: blogs.image}} />
-    </View>
+      </View>
+    )
   );
 };
 
 const styles = StyleSheet.create({
   header: {
-    marginTop: 5,
     textAlign: 'center',
     alignItems: 'center',
     backgroundColor: '#CCFFFF',
@@ -40,5 +44,6 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
-  }
+    marginTop: 80,
+  },
 });
