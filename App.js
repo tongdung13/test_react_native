@@ -11,6 +11,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import Login from './src/components/Login';
 import Blog from './src/screens/Blog';
+import {BlogDetail} from './src/screens/BlogDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,11 @@ const App = () => {
           options={{
             headerShown: false,
           }}
+        />
+        <Stack.Screen
+          name="BlogDetail"
+          component={BlogDetail}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>
