@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Icon } from 'react-native-vector-icons/Icon';
 import {blog_api} from './blog_api';
 
 const Blog = ({navigation}) => {
@@ -34,7 +33,7 @@ const Blog = ({navigation}) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.button}>
-          <Icon name='left' />
+          {/* <Icon name='left' /> */}
         </TouchableOpacity>
         <Text style={styles.header}>Blog Screen</Text>
       </View>
