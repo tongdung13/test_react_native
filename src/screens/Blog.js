@@ -1,15 +1,13 @@
-import {S3Image} from 'aws-amplify-react-native';
 import React, {useEffect, useState} from 'react';
 import {
   Alert,
   Image,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {DataTable} from 'react-native-paper';
+import { Icon } from 'react-native-vector-icons/Icon';
 import {blog_api} from './blog_api';
 
 const Blog = ({navigation}) => {
@@ -33,18 +31,20 @@ const Blog = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Text style={styles.header}>Blog Screen</Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigation.goBack()}
           style={styles.button}>
-          <Text style={styles.submit}>Quay lai</Text>
+          <Icon name='left' />
         </TouchableOpacity>
+        <Text style={styles.header}>Blog Screen</Text>
       </View>
       {Array.isArray(blogs) &&
         blogs.map((data, index) => {
           return (
-            <TouchableOpacity onPress={() => navigation.navigate('BlogDetail', {id: data.id})}>
-              <View style={styles.row} key={index}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('BlogDetail', {id: data.id})}
+              key={index}>
+              <View style={styles.row}>
                 <Image style={styles.image} source={{uri: data.image}} />
                 <Text style={styles.title1}>{data.title}</Text>
                 <Text style={styles.content}>{data.content}</Text>
@@ -62,7 +62,9 @@ styles = StyleSheet.create({
   },
   header: {
     fontSize: 30,
-    color: 'red',
+    color: 'white',
+    textAlign: 'center',
+    alignItems: 'center',
   },
   blog: {
     width: 350,
@@ -74,8 +76,7 @@ styles = StyleSheet.create({
     backgroundColor: '#6699FF',
   },
   title: {
-    textAlign: 'center',
-    alignItems: 'center',
+    backgroundColor: '#FF0000',
   },
   row: {
     flexDirection: 'column',
